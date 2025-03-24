@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf Event Sustainability Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        #game-container { max-width: 800px; margin: 40px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        button { display: block; margin: 15px auto; padding: 15px; font-size: 18px; border: none; background: #007bff; color: white; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        img { width: 80%; max-width: 700px; height: auto; margin: 20px auto; display: block; border-radius: 10px; }
+        p { font-size: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Golf Event Sustainability Game</h1>
+    <div id="game-container">
+        <img id="scenario-image" src="start.png" alt="Start Image">
+        <p id="message">Loading game...</p>
+        <div id="options"></div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const messageBox = document.getElementById("message");
+            const optionsContainer = document.getElementById("options");
+            const imageElement = document.getElementById("scenario-image");
+            let score = 0;
+            let currentScenario = 0;
+            
+            const scenarios = [
+                { question: "How can golf events reduce plastic waste?", image: "plastic_waste.png", options: [
+                    { text: "Provide reusable water bottles", score: 10 },
+                    { text: "Use single-use plastic cups", score: -5 },
+                    { text: "Ignore waste management", score: -10 }
+                ]},
+                { question: "What is the best way to handle food waste at a golf tournament?", image: "food_waste.png", options: [
+                    { text: "Leave food waste on the ground", score: -5 },
+                    { text: "Throw all leftovers in the trash", score: -10 },
+                    { text: "Donate leftovers to charities", score: 15 }
+                ]},
+                { question: "How can golf events minimize transportation emissions?", image: "transport.png", options: [
+                    { text: "Encourage single-occupancy car travel", score: -5 },
+                    { text: "Use shuttle buses for participants", score: 10 },
+                    { text: "Allow only private gas-powered cars", score: -10 }
+                ]},
+                { question: "What is a good way to make golf courses more eco-friendly during events?", image: "eco_friendly_course.png", options: [
+                    { text: "Use organic fertilizers and reduce chemicals", score: 15 },
+                    { text: "Overwater the grass daily", score: -10 },
+                    { text: "Spray pesticides everywhere", score: -5 }
+                ]},
+                { question: "How can golf events use energy more sustainably?", image: "energy_saving.png", options: [
+                    { text: "Use only diesel generators", score: -5 },
+                    { text: "Keep all lights on overnight", score: -10 },
+                    { text: "Use wind-powered generators for energy", score: 15 }
+                ]},
+                { question: "Which golf equipment material is more sustainable?", image: "equipment.png", options: [
+                    { text: "Use disposable wooden tees", score: -3 },
+                    { text: "Use plastic tees", score: -5 },
+                    { text: "Use bamboo golf tees", score: 15 }
+                ]},
+                { question: "How can golf events reduce paper waste?", image: "digital_scorecards.png", options: [
+                    { text: "Use electronic scorecards and leaderboards", score: 15 },
+                    { text: "Print scorecards and leaderboards for every player", score: -10 },
+                    { text: "Handwrite scores and print multiple copies", score: -5 }
+                ]}
+            ];
+            
+            function showScenario() {
+                if (currentScenario >= scenarios.length) {
+                    messageBox.innerText = `Game Over! Your sustainability score: ${score}`;
+                    optionsContainer.innerHTML = "<button onclick='restartGame()'>Play Again</button>";
+                    imageElement.src = "game_over.png";
+                    return;
+                }
+                
+                const scenario = scenarios[currentScenario];
+                messageBox.innerText = scenario.question;
+                imageElement.src = scenario.image;
+                optionsContainer.innerHTML = "";
+                
+                scenario.options.forEach(option => {
+                    const button = document.createElement("button");
+                    button.innerText = option.text;
+                    button.onclick = () => {
+                        score += option.score;
+                        currentScenario++;
+                        showScenario();
+                    };
+                    optionsContainer.appendChild(button);
+                });
+            }
+            
+            function restartGame() {
+                score = 0;
+                currentScenario = 0;
+                imageElement.src = "start.png";
+                messageBox.innerText = "Loading game...";
+                optionsContainer.innerHTML = "";
+                showScenario();
+            }
+            
+            showScenario();
+        });
+    </script>
+</body>
+</html>
